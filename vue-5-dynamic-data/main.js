@@ -6,7 +6,7 @@ const app = new Vue({
     },
     methods: {
       deleteFriend(id, i) {
-        fetch("http://rest.learncode.academy/api/vue-5/friends/" + id, {
+        fetch("http://localhost:3000/v1/characters/" + id, {
           method: "DELETE"
         })
         .then(() => {
@@ -14,7 +14,7 @@ const app = new Vue({
         })
       },
       updateFriend(friend) {
-        fetch("http://rest.learncode.academy/api/vue-5/friends/" + friend.id, {
+        fetch("http://localhost:3000/v1/characters/" + friend.id, {
           body: JSON.stringify(friend),
           method: "PUT",
           headers: {
@@ -27,25 +27,27 @@ const app = new Vue({
       }
     },
     mounted() {
-      fetch("http://rest.learncode.academy/api/vue-5/friends")
+      fetch("http://localhost:3000/v1/characters")
         .then(response => response.json())
         .then((data) => {
           this.friends = data;
         })
     },
     template: `
-    <div>
-      <li v-for="friend, i in friends">
-        <div v-if="editFriend === friend.id">
-          <input v-on:keyup.13="updateFriend(friend)" v-model="friend.name" />
-          <button v-on:click="updateFriend(friend)">save</button>
-        </div>
-        <div v-else>
-          <button v-on:click="editFriend = friend.id">edit</button>
-          <button v-on:click="deleteFriend(friend.id, i)">x</button>
-          {{friend.name}}
-        </div>
+    <ul class="list-group">
+      <div>
+      <li class="list-group-item" v-for="friend, i in friends">
+      <div v-if="editFriend === friend.id">
+      <input v-on:keyup.13="updateFriend(friend)" v-model="friend.name" />
+      <button class="btn btn-primary" v-on:click="updateFriend(friend)">save</button>
+      </div>
+      <div v-else>
+      <button class="btn btn-warning" v-on:click="editFriend = friend.id">edit</button>
+      <button v-on:click="deleteFriend(friend.id, i)">x</button>
+      {{friend.name}}
+      </div>
       </li>
-    </div>
+      </div>
+    </ul>
     `,
 });
